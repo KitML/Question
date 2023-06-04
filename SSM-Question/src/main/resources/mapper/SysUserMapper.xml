@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itmk.web.sys_user.mapper.SysUserMapper">
+    <!--解决实体和数据库字段不对应的问题-->
+    <resultMap id="sysUserMap" type="com.itmk.web.sys_user.entity.SysUser">
+        <id property="userId" column="user_id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="phone" column="phone"/>
+        <result property="email" column="email"/>
+        <result property="status" column="status"/>
+        <result property="isadmin" column="isadmin"/>
+    </resultMap>
+
+    <!--查询所有的用户-->
+    <select id="getUserList" resultMap="sysUserMap">
+        select * from sys_user
+    </select>
+    <!--插入用户-->
+    <insert id="addUser" parameterType="com.itmk.web.sys_user.entity.SysUser">
+        insert into sys_user(phone,email,username,password,status)
+        values (#{user.phone},#{user.email},#{user.username},#{user.password},#{user.status})
+    </insert>
+    <!--查询用户是否存在-->
+    <select id="getUserByName" resultMap="sysUserMap">
+        select * from sys_user
+        where username=#{username}
+    </select>
+
+    <select id="getUserTableList" resultMap="sysUserMap">
+        select * from sys_user
+        where 1=1
+        <if test="parm.phone!=null and parm.phone != ''">
+            and phone like concat('%',#{parm.phone},'%')
+        </if>
+    </select>
+    <select id="getUserById" resultMap="sysUserMap">
+        select * from sys_user
+        where user_id=#{userId}
+    </select>
+
+    <update id="updateById">
+        update sys_user
+        <set>
+            <if test="user.username != null and user.username !=''">
+                username =#{user.username},
+            </if>
+            <if test="user.password != null and user.password !=''">
+                password =#{user.password},
+            </if>
+            <if test="user.phone != null and user.phone !=''">
+                phone =#{user.phone},
+            </if>
+            <if test="user.email != null and user.email !=''">
+                email =#{user.email},
+            </if>
+            <if test="user.status != null and user.status !=''">
+                status =#{user.status},
+            </if>
+        </set>
+        where user_id =#{user.userId}
+    </update>
+    <delete id="deleteById">
+        delete from sys_user
+        where user_id =#{userId}
+    </delete>
+
+    <select id="login" resultMap="sysUserMap">
+        select * from sys_user
+        where username =#{user.username}
+        and password =#{user.password}
+    </select>
+</mapper>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itmk.web.sys_question.mapper.SysQuestionMapper">
+    <!--解决数据库字段个实体类字段不一致，类似驼峰映射-->
+    <resultMap id="sysQuestionMap" type="com.itmk.web.sys_question.entity.SysQuestion">
+        <id property="questionId" column="question_id"></id>
+        <result property="questionTitle" column="question_title"></result>
+        <result property="questionDesc" column="question_desc"></result>
+        <result property="questionImg" column="question_img"></result>
+        <result property="questionOrder" column="question_order"></result>
+        <result property="questionStatus" column="question_status"></result>
+    </resultMap>
+    <!--新增问卷-->
+    <insert id="addQuestion" parameterType="com.itmk.web.sys_question.entity.SysQuestion">
+        insert into sys_question(question_title,question_desc,question_img,question_order,question_status)
+        values (#{sysQuestion.questionTitle},#{sysQuestion.questionDesc},#{sysQuestion.questionImg},#{sysQuestion.questionOrder},#{sysQuestion.questionStatus})
+    </insert>
+    <!--查询表格列表-->
+    <select id="getTableList" resultMap="sysQuestionMap">
+        select * from sys_question
+        where 1=1
+        <if test="questionTitle !=null and questionTitle !=''">
+            and question_title like concat('%',#{questionTitle},'%')
+        </if>
+    </select>
+    <!--根据id查询-->
+    <select id="getById" resultMap="sysQuestionMap">
+        select * from sys_question
+        where question_id=#{questionId}
+    </select>
+    <!--查询我的问卷列表-->
+    <select id="getMyQuestionList" resultMap="sysQuestionMap">
+        select sq.* from sys_question as sq,answer_question as aq
+        where aq.question_id =sq.question_id
+        <if test="questionTitle != null and questionTitle !=''">
+            and sq.question_title like concat('%',#{questionTitle},'%')
+        </if>
+        and aq.user_id=#{userId}
+    </select>
+    <!--编辑问卷-->
+    <update id="editQuestion">
+        update sys_question
+        <set>
+            <if test="sysQuestion.questionTitle != null and sysQuestion.questionTitle !=''">
+                question_title =#{sysQuestion.questionTitle},
+            </if>
+            <if test="sysQuestion.questionDesc != null and sysQuestion.questionDesc !=''">
+                question_desc =#{sysQuestion.questionDesc},
+            </if>
+            <if test="sysQuestion.questionImg != null and sysQuestion.questionImg !=''">
+                question_img =#{sysQuestion.questionImg},
+            </if>
+            <if test="sysQuestion.questionOrder != null and sysQuestion.questionOrder !=''">
+                question_order =#{sysQuestion.questionOrder},
+            </if>
+            <if test="sysQuestion.questionStatus != null and sysQuestion.questionStatus !=''">
+                question_status =#{sysQuestion.questionStatus},
+            </if>
+        </set>
+        where question_id=#{sysQuestion.questionId}
+    </update>
+    <!--根据id删除-->
+    <delete id="deleteQuestion">
+        delete from sys_question
+        where question_id = #{questionId}
+    </delete>
+</mapper>

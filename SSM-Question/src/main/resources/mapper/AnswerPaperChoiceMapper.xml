@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itmk.web.answer_paper_choice.mapper.AnswerPaperChoiceMapper">
+    <!--    解决数据库字段和实体类字段不一样的问题-->
+    <resultMap id="answerPaperMap" type="com.itmk.web.answer_paper_choice.entity.AnswerPaperChoice">
+        <id property="answerChoiceId" column="answer_choice_id"></id>
+        <result property="chioceId" column="chioce_id"></result>
+        <result property="paperId" column="paper_id"></result>
+        <result property="userId" column="user_id"></result>
+    </resultMap>
+    <insert id="save" parameterType="java.util.List">
+        insert into answer_paper_choice(chioce_id,paper_id,user_id)
+        values
+        <foreach collection="list" item="paper" separator=",">
+            (#{paper.chioceId},#{paper.paperId},#{paper.userId})
+        </foreach>
+    </insert>
+</mapper>

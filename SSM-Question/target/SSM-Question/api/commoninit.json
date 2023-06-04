@@ -1,0 +1,33 @@
+{
+  "homeInfo": {
+    "title": "首页",
+    "href": "/home/commonwelcome"
+  },
+  "logoInfo": {
+    "title": "调查问卷系统",
+    "image": "/images/logo.png",
+    "href": ""
+  },
+  "menuInfo": [
+    {
+      "title": "系统管理",
+      "icon": "fa fa-address-book",
+      "href": "",
+      "target": "_self",
+      "child": [
+        {
+          "title": "问卷列表",
+          "href": "/api/sysQuestion/commonlist",
+          "icon": "fa fa-window-maximize",
+          "target": "_self"
+        },
+        {
+          "title": "我的问卷",
+          "href": "/api/sysQuestion/myListUI",
+          "icon": "fa fa-gears",
+          "target": "_self"
+        }
+      ]
+    }
+  ]
+}

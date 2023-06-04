@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itmk.web.sys_paper.mapper.SysPaperMapper">
+    <!--    解决数据库字段和实体类字段不一样的问题-->
+    <resultMap id="sysChoice" type="com.itmk.web.sys_paper.entity.SysPaper">
+        <id property="paperId" column="paper_id"></id>
+        <result property="questionId" column="question_id"></result>
+        <result property="paperTitle" column="paper_title"></result>
+        <result property="paperType" column="paper_type"></result>
+        <result property="paperOrder" column="paper_order"></result>
+    </resultMap>
+    <!--新增试题-->
+    <insert id="addPaper" useGeneratedKeys="true" keyProperty="paperId" keyColumn="paper_id" parameterType="com.itmk.web.sys_paper.entity.SysPaper">
+        insert into sys_paper(question_id,paper_title,paper_type,paper_order)
+        values
+        (#{paper.questionId},#{paper.paperTitle},#{paper.paperType},#{paper.paperOrder})
+    </insert>
+    <!--删除试题-->
+    <delete id="deletePaper">
+        delete from sys_paper
+        where question_id =#{questionId}
+    </delete>
+    <select id="listPaper" resultMap="sysChoice">
+        select  * from sys_paper
+         where
+        question_id =#{questionId}
+</select>
+</mapper>

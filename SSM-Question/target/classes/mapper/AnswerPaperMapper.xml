@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itmk.web.answer_paper.mapper.AnswerPaperMapper">
+    <!--    解决数据库字段和实体类字段不一样的问题-->
+    <resultMap id="answerPaperMap" type="com.itmk.web.answer_paper.entity.AnswerPaper">
+        <id property="answerPaperId" column="answer_paper_id"></id>
+        <result property="paperId" column="paper_id"></result>
+        <result property="userId" column="user_id"></result>
+        <result property="paperType" column="paper_type"></result>
+        <result property="paperValue" column="paper_value"></result>
+    </resultMap>
+    <insert id="saveBatch" parameterType="java.util.List">
+        insert into answer_paper(paper_id,user_id,paper_type,paper_value)
+        values
+        <foreach collection="list" item="paper" separator=",">
+            (#{paper.paperId},#{paper.userId},#{paper.paperType},#{paper.paperValue})
+        </foreach>
+    </insert>
+</mapper>
